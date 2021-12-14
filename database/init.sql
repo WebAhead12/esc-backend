@@ -39,5 +39,5 @@ CREATE TABLE requests(
 CREATE TABLE invites(
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
-
+    status varchar(12)
 )
