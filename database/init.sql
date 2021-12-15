@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users,teams,request,invite CASCADE;
+DROP TABLE IF EXISTS players,teams,requests,invites,games CASCADE;
 
 CREATE TABLE players(
     id SERIAL PRIMARY KEY,
@@ -25,8 +25,8 @@ CREATE TABLE teams(
     email varchar(255),
     description varchar(255),
     imagelink varchar(255),
-    players json,
-    games json
+    game varchar(36),
+    requirements json
 );
 
 CREATE TABLE requests(
