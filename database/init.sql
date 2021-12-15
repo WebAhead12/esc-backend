@@ -30,6 +30,7 @@ CREATE TABLE teams(
 );
 
 CREATE TABLE requests(
+    id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
     content json,
@@ -37,9 +38,15 @@ CREATE TABLE requests(
 );
 
 CREATE TABLE invites(
+    id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
     status varchar(12)
+);
+
+CREATE TABLE games(
+    id SERIAL PRIMARY KEY,
+    name varchar(36)
 );
 
 COMMIT;
