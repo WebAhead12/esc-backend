@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const model = require("../model/players");
 const bcrypt = require("bcryptjs");
+const teams = require("../model/teams");
 
 dotenv.config();
 const SECRET = process.env.JWT_SECRET;
@@ -12,14 +13,21 @@ function registerP(req, res, next) {
     .getPlayer(username)
     .then((find) => {
       if (find.length == 0) {
-        model
-          .createPlayer(req.body) //function to create a user using the username and passowrd
-          .then((id) => {
-            res.status(401).send(id.rows[0]);
-          })
-          .catch(next);
+        teams.getTeamByEmail(req.body.email).then((email) => {
+          if (email.length == 0) {
+            model
+              .createPlayer(req.body) //function to create a user using the username and passowrd
+              .then((id) => {
+                res.status(401).send(id.rows[0]);
+              })
+              .catch(next);
+          } else {
+            const response = { status: "team is using email" };
+            res.status(401).send(response);
+          }
+        });
       } else {
-        const response = { status: "taken" };
+        const response = { status: "username taken" };
         res.status(401).send(response);
       }
     })
@@ -60,4 +68,12 @@ function loginP(req, res, next) {
     .catch(next);
 }
 
-module.exports = { loginP, registerP };
+function players(req, res, next) {
+  model
+    .getAllPlayers()
+    .then((players) => {
+      res.status(200).send(players);
+    })
+    .catch(next);
+}
+module.exports = { loginP, registerP, players };

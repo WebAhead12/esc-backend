@@ -2,24 +2,32 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const model = require("../model/teams");
 const bcrypt = require("bcryptjs");
-
 dotenv.config();
 const SECRET = process.env.JWT_SECRET;
+const player = require("../model/players");
 
 function registerT(req, res, next) {
   const teamname = req.body.teamname;
+  console.log(req.body);
   model
     .getTeam(teamname)
     .then((find) => {
       if (find.length == 0) {
-        model
-          .createTeam(req.body) //function to create a user using the username and passowrd
-          .then((id) => {
-            res.status(401).send(id.rows[0]);
-          })
-          .catch(next);
+        player.getPlayerByEmail(req.body.email).then((email) => {
+          if (email.length == 0) {
+            model
+              .createPlayer(req.body) //function to create a user using the username and passowrd
+              .then((id) => {
+                res.status(401).send(id.rows[0]);
+              })
+              .catch(next);
+          } else {
+            const response = { status: "player is using email" };
+            res.status(401).send(response);
+          }
+        });
       } else {
-        const response = { status: "taken" };
+        const response = { status: "username taken" };
         res.status(401).send(response);
       }
     })
@@ -28,10 +36,12 @@ function registerT(req, res, next) {
 
 function loginT(req, res, next) {
   const team = req.body;
+  console.log(team);
   //we search for the user
   model
     .getTeam(team.teamname)
     .then((find) => {
+      console.log(find);
       //if the getUser function returns and empty array there is not user in our dt
       if (find.length == 0) {
         const response = { status: "noUser" };
@@ -44,7 +54,7 @@ function loginT(req, res, next) {
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
-              { teamname: team.username, id: find[0].id },
+              { teamname: team.teamname, id: find[0].id },
               SECRET
             );
             const response = {
@@ -60,7 +70,8 @@ function loginT(req, res, next) {
     .catch(next);
 }
 function teams(req, res, next) {
-  model.getAllTeams
+  model
+    .getAllTeams()
     .then((teams) => {
       res.status(200).send(teams);
     })

@@ -36,8 +36,16 @@ function getAllTeams() {
     return teams.rows;
   });
 }
+function getTeamByEmail(email) {
+  return db
+    .query(`SELECT * FROM teams WHERE email=$1 `, [email])
+    .then((team) => {
+      return team.rows;
+    });
+}
 module.exports = {
   createTeam,
   getTeam,
   getAllTeams,
+  getTeamByEmail,
 };
