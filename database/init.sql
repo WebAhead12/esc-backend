@@ -27,17 +27,19 @@ CREATE TABLE teams(
     imagelink varchar(255),
     players json,
     games json
-)
+);
 
 CREATE TABLE requests(
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
     content json,
     status varchar(12)
-)
+);
 
 CREATE TABLE invites(
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
     status varchar(12)
-)
+);
+
+COMMIT;
