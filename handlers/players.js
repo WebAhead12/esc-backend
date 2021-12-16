@@ -9,9 +9,8 @@ const SECRET = process.env.JWT_SECRET;
 
 function registerP(req, res, next) {
   const username = req.body.username;
-  console.log(username);
   model
-    .getPlayer(req.body.username)
+    .getPlayer(username)
     .then((find) => {
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
