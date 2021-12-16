@@ -33,15 +33,14 @@ CREATE TABLE requests(
     id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
-    content json,
-    status varchar(12)
+    status varchar(12) DEFAULT 'Pending'
 );
 
 CREATE TABLE invites(
     id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
-    status varchar(12)
+    status varchar(12) DEFAULT 'Pending'
 );
 
 CREATE TABLE games(

@@ -43,10 +43,12 @@ function getPlayerByEmail(email) {
     });
 }
 
-function getAllPlayers() {
-  return db.query(`SELECT * FROM players`).then((players) => {
-    return playes.rows;
-  });
+function getAllPlayers(game) {
+  return db
+    .query(`SELECT * FROM players WHERE game =$1`, [game])
+    .then((players) => {
+      return playes.rows;
+    });
 }
 module.exports = {
   createPlayer,

@@ -31,10 +31,12 @@ function getTeam(teamname) {
       return team.rows;
     });
 }
-function getAllTeams() {
-  return db.query(`SELECT * FROM teams`).then((teams) => {
-    return teams.rows;
-  });
+function getAllTeams(game) {
+  return db
+    .query(`SELECT * FROM teams WHERE game =$1`, [game])
+    .then((teams) => {
+      return teams.rows;
+    });
 }
 function getTeamByEmail(email) {
   return db

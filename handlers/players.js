@@ -9,8 +9,9 @@ const SECRET = process.env.JWT_SECRET;
 
 function registerP(req, res, next) {
   const username = req.body.username;
+  console.log(username);
   model
-    .getPlayer(username)
+    .getPlayer(req.body.username)
     .then((find) => {
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
@@ -68,12 +69,13 @@ function loginP(req, res, next) {
     .catch(next);
 }
 
-function players(req, res, next) {
+function allPlayers(req, res, next) {
+  const game = req.params.game;
   model
-    .getAllPlayers()
+    .getAllPlayers(game)
     .then((players) => {
       res.status(200).send(players);
     })
     .catch(next);
 }
-module.exports = { loginP, registerP, players };
+module.exports = { loginP, registerP, allPlayers };

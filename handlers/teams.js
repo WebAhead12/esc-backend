@@ -16,7 +16,7 @@ function registerT(req, res, next) {
         player.getPlayerByEmail(req.body.email).then((email) => {
           if (email.length == 0) {
             model
-              .createPlayer(req.body) //function to create a user using the username and passowrd
+              .createTeam(req.body) //function to create a user using the username and passowrd
               .then((id) => {
                 res.status(401).send(id.rows[0]);
               })
@@ -70,8 +70,9 @@ function loginT(req, res, next) {
     .catch(next);
 }
 function teams(req, res, next) {
+  const game = req.params.game;
   model
-    .getAllTeams()
+    .getAllTeams(game)
     .then((teams) => {
       res.status(200).send(teams);
     })
