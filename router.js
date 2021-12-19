@@ -15,6 +15,8 @@ router.post("/loginT", teams.loginT);
 router.post("/loginP", players.loginP);
 //get all the teams
 router.get("/teams/:game", teams.teams);
+router.get("/Selectedteams/:teamName", teams.teamByName);
+router.get("/teams", teams.teamsAll);
 //get all the players
 router.get("/players/:game", players.allPlayers);
 //get all the games

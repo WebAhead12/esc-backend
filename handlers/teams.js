@@ -72,11 +72,26 @@ function loginT(req, res, next) {
 function teams(req, res, next) {
   const game = req.params.game;
   model
-    .getAllTeams(game)
+    .getTeamsByGame(game)
     .then((teams) => {
       res.status(200).send(teams);
     })
     .catch(next);
 }
 
-module.exports = { loginT, registerT, teams };
+function teamsAll(req, res, next) {
+  model
+    .getAllTeams()
+    .then((teams) => {
+      res.status(200).send(teams);
+    })
+    .catch(next);
+}
+function teamByName(req,res,next){
+  console.log(req.params.teamName)
+  model.
+  getTeam(req.params.teamName).then((team)=>{
+    res.status(200).send(team)
+  }).catch(next);
+}
+module.exports = { loginT, registerT, teams,teamsAll,teamByName };

@@ -31,7 +31,7 @@ function getTeam(teamname) {
       return team.rows;
     });
 }
-function getAllTeams(game) {
+function getTeamsByGame(game) {
   return db
     .query(`SELECT * FROM teams WHERE game =$1`, [game])
     .then((teams) => {
@@ -45,9 +45,17 @@ function getTeamByEmail(email) {
       return team.rows;
     });
 }
+function getAllTeams() {
+  return db
+    .query(`SELECT teamname,id,game,requirements,email,description,imagelink FROM teams`)
+    .then((team) => {
+      return team.rows;
+    });
+}
 module.exports = {
   createTeam,
   getTeam,
   getAllTeams,
-  getTeamByEmail,
+  getTeamsByGame,
+  getTeamByEmail
 };
