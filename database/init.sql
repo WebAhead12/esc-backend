@@ -9,7 +9,7 @@ CREATE TABLE players(
     firstname varchar(255),
     lastname varchar(255),
     email varchar(255) UNIQUE,
-    age INTEGER,
+    age varchar(100),
     languages varchar(255),
     gender varchar(255),
     imagelink varchar(255),
