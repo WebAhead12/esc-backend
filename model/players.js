@@ -14,7 +14,7 @@ function createPlayer(player) {
         player.firstname,
         player.lastname,
         player.email,
-        player.age,
+        player.date,
         player.languages,
         player.gender,
         player.imagelink,
