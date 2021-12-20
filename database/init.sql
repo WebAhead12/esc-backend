@@ -15,13 +15,14 @@ CREATE TABLE players(
     imagelink varchar(255),
     location varchar(255),
     registerdate DATE DEFAULT CURRENT_TIMESTAMP,
-    stats json
+    games json
 );
 
 CREATE TABLE teams(
     id SERIAL PRIMARY KEY,
     teamname varchar(36),
     password varchar(255),
+    name varchar(255),
     email varchar(255) UNIQUE,
     description varchar(255),
     imagelink varchar(255),
@@ -45,7 +46,8 @@ CREATE TABLE invites(
 
 CREATE TABLE games(
     id SERIAL PRIMARY KEY,
-    name varchar(36)
+    value varchar(36),
+    label varchar(36)
 );
 
 COMMIT;

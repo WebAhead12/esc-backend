@@ -12,13 +12,18 @@ function registerT(req, res, next) {
   model
     .getTeam(teamname)
     .then((find) => {
+      console.log(find);
       if (find.length == 0) {
         player.getPlayerByEmail(req.body.email).then((email) => {
           if (email.length == 0) {
             model
               .createTeam(req.body) //function to create a user using the username and passowrd
               .then((id) => {
-                res.status(401).send(id.rows[0]);
+                const response = {
+                  ...id.rows[0],
+                  status: "success",
+                };
+                res.status(200).send(response);
               })
               .catch(next);
           } else {
@@ -87,11 +92,13 @@ function teamsAll(req, res, next) {
     })
     .catch(next);
 }
-function teamByName(req,res,next){
-  console.log(req.params.teamName)
-  model.
-  getTeam(req.params.teamName).then((team)=>{
-    res.status(200).send(team)
-  }).catch(next);
+function teamByName(req, res, next) {
+  console.log(req.params.teamName);
+  model
+    .getTeam(req.params.teamName)
+    .then((team) => {
+      res.status(200).send(team);
+    })
+    .catch(next);
 }
-module.exports = { loginT, registerT, teams,teamsAll,teamByName };
+module.exports = { loginT, registerT, teams, teamsAll, teamByName };
