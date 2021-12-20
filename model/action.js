@@ -10,58 +10,61 @@ function getGames() {
 }
 function getInvites(id) {
   return db
-    .query(`SELECT * FROM invites WHERE id =$1`, [id])
+    .query(
+      `SELECT invites.status, teams.teamname FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
+      [id]
+    )
     .then((invites) => {
       return invites.rows;
     });
 }
 function getRequests(id) {
   return db
-    .query(`SELECT * FROM requests WHERE id =$1`, [id])
+    .query(
+      `SELECT requests.status, player.username FROM requests LEFT JOIN players ON requests.playerid = player.id WHERE teamid = $1`,
+      [id]
+    )
     .then((requests) => {
       return requests.rows;
     });
 }
 function postRequest(data, id) {
-  const { player_id, team_id } = data;
   return db
     .query(
       `INSERT INTO requests (playerid, teamid) VALUES ($1, $2) RETURNING id,status`,
-      [player_id, team_id]
+      [id, teamid]
     )
     .then((request) => {
       return request.rows;
     });
 }
 function postInvite(data, id) {
-  const { player_id, team_id } = data;
   return db
-    .query(`INSERT INTO invites (playerid, teamid) VALUES ($1, $2)`, [
-      player_id,
-      team_id,
-    ])
+    .query(
+      `INSERT INTO invites (playerid, teamid) VALUES ($1, $2) RETURNING id,status`,
+      [playerid, id]
+    )
     .then((invite) => {
       return invite.rows;
     });
 }
-function updateRequest(data) {
-  const { teamid, playerid, status } = data;
-  console.log(teamid, playerid, status);
+function updateRequest(data, id) {
+  const { playerid, status } = data;
   return db
     .query(
       `UPDATE requests SET status = $1 WHERE playerid = $2 AND teamid = $3 RETURNING status`,
-      [status, playerid, teamid]
+      [status, playerid, id]
     )
     .then((status) => {
       return status.rows;
     });
 }
-function updateInvite(data) {
-  const { playerid, teamid, status } = data;
+function updateInvite(data, id) {
+  const { teamid, status } = data;
   return db
     .query(
       `UPDATE invites SET status = $1 WHERE playerid = $2 AND teamid = $3 RETURNING status`,
-      [status, playerid, teamid]
+      [status, id, teamid]
     )
     .then((status) => {
       return status.rows;

@@ -1,4 +1,5 @@
 const model = require("../model/action");
+const teamModel = require("../model/teams");
 
 function games(req, res, next) {
   model
@@ -17,8 +18,9 @@ function getRequests(req, res, next) {
     .catch(next);
 }
 function getInvites(req, res, next) {
+  console.log(req.body.id);
   model
-    .getInvites(req.id)
+    .getInvites(req.body.id)
     .then((invites) => {
       res.status(200).send(invites);
     })
@@ -39,7 +41,7 @@ function addRequest(req, res, next) {
 function addInvite(req, res, next) {
   const data = req.body; //teamid playerid + status "pending"
   model
-    .postRequest(data)
+    .postInvite(data)
     .then((invites) => {
       res.status(200).send(invites);
     })
@@ -57,9 +59,9 @@ function inviteStatus(req, res, next) {
 
 function inviteRequest(req, res, next) {
   const data = req.body;
-  console.log(data);
+  const id = req.id;
   model
-    .updateRequest(data)
+    .updateRequest(data, id)
     .then((status) => {
       res.status(200).send(status);
     })

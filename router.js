@@ -22,9 +22,9 @@ router.get("/players/:game", players.allPlayers);
 //get all the games
 router.get("/games", actions.games);
 //getting all the requests
-router.get("/requests", verifyAccount, actions.getRequests); // middleware
+router.get("/requests", actions.getRequests); // middleware
 //getting all the invites
-router.get("/invites", verifyAccount, actions.getInvites); // middleware
+router.post("/invites", actions.getInvites); // middleware
 //adding invites
 router.post("/addInvites", actions.addInvite); // middleware
 // //adding requests

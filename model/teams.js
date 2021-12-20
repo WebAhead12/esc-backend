@@ -47,15 +47,18 @@ function getTeamByEmail(email) {
 }
 function getAllTeams() {
   return db
-    .query(`SELECT teamname,id,game,requirements,email,description,imagelink FROM teams`)
+    .query(
+      `SELECT teamname,id,game,requirements,email,description,imagelink FROM teams`
+    )
     .then((team) => {
       return team.rows;
     });
 }
+
 module.exports = {
   createTeam,
   getTeam,
   getAllTeams,
   getTeamsByGame,
-  getTeamByEmail
+  getTeamByEmail,
 };
