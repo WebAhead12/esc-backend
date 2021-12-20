@@ -12,13 +12,16 @@ function registerP(req, res, next) {
   model
     .getPlayer(username)
     .then((find) => {
+      console.log(find.length);
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
+          console.log(email);
           if (email.length == 0) {
+            console.log(req.body);
             model
               .createPlayer(req.body) //function to create a user using the username and passowrd
               .then((id) => {
-                res.status(401).send(id.rows[0]);
+                res.status(200).send(id.rows[0]);
               })
               .catch(next);
           } else {
@@ -37,6 +40,7 @@ function registerP(req, res, next) {
 function loginP(req, res, next) {
   const player = req.body;
   //we search for the user
+  console.log(player);
   model
     .getPlayer(player.username)
     .then((find) => {
@@ -58,7 +62,6 @@ function loginP(req, res, next) {
             const response = {
               username: player.username,
               access_token: token,
-              status: "",
             };
             res.status(200).send(response);
           }
