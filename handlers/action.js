@@ -18,9 +18,8 @@ function getRequests(req, res, next) {
     .catch(next);
 }
 function getInvites(req, res, next) {
-  console.log(req.body.id);
   model
-    .getInvites(req.body.id)
+    .getInvites(req.id)
     .then((invites) => {
       res.status(200).send(invites);
     })
@@ -48,9 +47,11 @@ function addInvite(req, res, next) {
     .catch(next);
 }
 function inviteStatus(req, res, next) {
+  // for player
   const data = req.body;
+  const id = req.id;
   model
-    .updateInvite(data)
+    .updateInvite(data, id)
     .then((status) => {
       res.status(200).send(status);
     })
@@ -58,6 +59,7 @@ function inviteStatus(req, res, next) {
 }
 
 function inviteRequest(req, res, next) {
+  //for team
   const data = req.body;
   const id = req.id;
   model

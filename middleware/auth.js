@@ -18,10 +18,6 @@ function verifyAccount(req, res, next) {
       req.username = tokenData.username;
       req.id = tokenData.id;
       next();
-    } else {
-      req.teamname = tokenData.teamname;
-      req.id = tokenData.id;
-      next();
     }
   } catch (_error) {
     const error = new Error("Invalid token");

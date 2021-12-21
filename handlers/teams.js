@@ -54,13 +54,13 @@ function loginT(req, res, next) {
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
-              { teamname: team.teamname, id: find[0].id },
+              { teamname: team.teamname, id: find[0].id, pot: "team" },
               SECRET
             );
             const response = {
               teamname: team.teamname,
               access_token: token,
-              status: "",
+              success: true,
             };
             res.status(200).send(response);
           }
@@ -87,11 +87,13 @@ function teamsAll(req, res, next) {
     })
     .catch(next);
 }
-function teamByName(req,res,next){
-  console.log(req.params.teamName)
-  model.
-  getTeam(req.params.teamName).then((team)=>{
-    res.status(200).send(team)
-  }).catch(next);
+function teamByName(req, res, next) {
+  console.log(req.params.teamName);
+  model
+    .getTeam(req.params.teamName)
+    .then((team) => {
+      res.status(200).send(team);
+    })
+    .catch(next);
 }
-module.exports = { loginT, registerT, teams,teamsAll,teamByName };
+module.exports = { loginT, registerT, teams, teamsAll, teamByName };
