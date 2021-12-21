@@ -16,9 +16,10 @@ function createTeam(team) {
         team.imagelink,
         team.game,
         team.requirements,
+        team.name,
       ];
       return db.query(
-        "INSERT INTO teams(teamname, password, email, description, imagelink, game, requirements) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id, teamname",
+        "INSERT INTO teams(teamname, password, email, description, imagelink, game, requirements,name) VALUES($1, $2, $3, $4, $5, $6, $7,$8) RETURNING id, teamname",
         values
       );
     });
@@ -31,10 +32,12 @@ function getTeam(teamname) {
       return team.rows;
     });
 }
-function getAllTeams() {
-  return db.query(`SELECT * FROM teams`).then((teams) => {
-    return teams.rows;
-  });
+function getTeamsByGame(game) {
+  return db
+    .query(`SELECT * FROM teams WHERE game =$1`, [game])
+    .then((teams) => {
+      return teams.rows;
+    });
 }
 function getTeamByEmail(email) {
   return db
@@ -43,9 +46,20 @@ function getTeamByEmail(email) {
       return team.rows;
     });
 }
+function getAllTeams() {
+  return db
+    .query(
+      `SELECT teamname,id,game,requirements,email,description,imagelink FROM teams`
+    )
+    .then((team) => {
+      return team.rows;
+    });
+}
+
 module.exports = {
   createTeam,
   getTeam,
   getAllTeams,
+  getTeamsByGame,
   getTeamByEmail,
 };

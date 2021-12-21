@@ -12,13 +12,18 @@ function registerT(req, res, next) {
   model
     .getTeam(teamname)
     .then((find) => {
+      console.log(find);
       if (find.length == 0) {
         player.getPlayerByEmail(req.body.email).then((email) => {
           if (email.length == 0) {
             model
-              .createPlayer(req.body) //function to create a user using the username and passowrd
+              .createTeam(req.body) //function to create a user using the username and passowrd
               .then((id) => {
-                res.status(401).send(id.rows[0]);
+                const response = {
+                  ...id.rows[0],
+                  status: "success",
+                };
+                res.status(200).send(response);
               })
               .catch(next);
           } else {
@@ -70,6 +75,16 @@ function loginT(req, res, next) {
     .catch(next);
 }
 function teams(req, res, next) {
+  const game = req.params.game;
+  model
+    .getTeamsByGame(game)
+    .then((teams) => {
+      res.status(200).send(teams);
+    })
+    .catch(next);
+}
+
+function teamsAll(req, res, next) {
   model
     .getAllTeams()
     .then((teams) => {
@@ -77,5 +92,13 @@ function teams(req, res, next) {
     })
     .catch(next);
 }
-
-module.exports = { loginT, registerT, teams };
+function teamByName(req, res, next) {
+  console.log(req.params.teamName);
+  model
+    .getTeam(req.params.teamName)
+    .then((team) => {
+      res.status(200).send(team);
+    })
+    .catch(next);
+}
+module.exports = { loginT, registerT, teams, teamsAll, teamByName };

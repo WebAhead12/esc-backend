@@ -12,13 +12,20 @@ function registerP(req, res, next) {
   model
     .getPlayer(username)
     .then((find) => {
+      console.log(find.length);
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
+          console.log(email);
           if (email.length == 0) {
+            console.log(req.body);
             model
               .createPlayer(req.body) //function to create a user using the username and passowrd
               .then((id) => {
-                res.status(401).send(id.rows[0]);
+                const response = {
+                  ...id.rows[0],
+                  status: "success",
+                };
+                res.status(200).send(response);
               })
               .catch(next);
           } else {
@@ -37,10 +44,12 @@ function registerP(req, res, next) {
 function loginP(req, res, next) {
   const player = req.body;
   //we search for the user
+  console.log(player);
   model
     .getPlayer(player.username)
     .then((find) => {
       //if the getUser function returns and empty array there is not user in our dt
+      console.log(req.body);
       if (find.length == 0) {
         const response = { status: "noUser" };
         res.status(401).send(response);
@@ -48,7 +57,7 @@ function loginP(req, res, next) {
         const dbPassword = find[0].password;
         bcrypt.compare(player.password, dbPassword).then((match) => {
           if (!match) {
-            res.send({ status: "wrong password" });
+            res.status(401).send({ status: "wrong password" });
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
@@ -58,7 +67,6 @@ function loginP(req, res, next) {
             const response = {
               username: player.username,
               access_token: token,
-              status: "",
             };
             res.status(200).send(response);
           }
@@ -68,12 +76,13 @@ function loginP(req, res, next) {
     .catch(next);
 }
 
-function players(req, res, next) {
+function allPlayers(req, res, next) {
+  const game = req.params.game;
   model
-    .getAllPlayers()
+    .getAllPlayers(game)
     .then((players) => {
       res.status(200).send(players);
     })
     .catch(next);
 }
-module.exports = { loginP, registerP, players };
+module.exports = { loginP, registerP, allPlayers };

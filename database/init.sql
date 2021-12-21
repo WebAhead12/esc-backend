@@ -9,19 +9,20 @@ CREATE TABLE players(
     firstname varchar(255),
     lastname varchar(255),
     email varchar(255) UNIQUE,
-    age INTEGER,
+    age varchar(100),
     languages varchar(255),
     gender varchar(255),
     imagelink varchar(255),
     location varchar(255),
     registerdate DATE DEFAULT CURRENT_TIMESTAMP,
-    stats json
+    games json
 );
 
 CREATE TABLE teams(
     id SERIAL PRIMARY KEY,
     teamname varchar(36),
     password varchar(255),
+    name varchar(255),
     email varchar(255) UNIQUE,
     description varchar(255),
     imagelink varchar(255),
@@ -33,20 +34,20 @@ CREATE TABLE requests(
     id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
-    content json,
-    status varchar(12)
+    status varchar(12) DEFAULT 'Pending'
 );
 
 CREATE TABLE invites(
     id SERIAL PRIMARY KEY,
     playerid INTEGER REFERENCES players(id),
     teamid INTEGER REFERENCES teams(id),
-    status varchar(12)
+    status varchar(12) DEFAULT 'Pending'
 );
 
 CREATE TABLE games(
     id SERIAL PRIMARY KEY,
-    name varchar(36)
+    value varchar(36),
+    label varchar(36)
 );
 
 COMMIT;
