@@ -2,6 +2,7 @@ const db = require("../database/connection");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
+const req = require("express/lib/request");
 
 function getGames() {
   return db.query(`SELECT * FROM games`).then((games) => {
@@ -11,7 +12,7 @@ function getGames() {
 function getInvites(id) {
   return db
     .query(
-      `SELECT invites.status,invites.teamid,teams.teamname FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
+      `SELECT invites.status,invites.teamid,teams.teamname,teams.name FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
       [id]
     )
     .then((invites) => {
@@ -21,14 +22,14 @@ function getInvites(id) {
 function getRequests(id) {
   return db
     .query(
-      `SELECT requests.status, player.username FROM requests LEFT JOIN players ON requests.playerid = player.id WHERE teamid = $1`,
+      `SELECT requests.status,requests.playerid, players.username FROM requests LEFT JOIN players ON requests.playerid = players.id WHERE teamid = $1`,
       [id]
     )
     .then((requests) => {
       return requests.rows;
     });
 }
-function postRequest(data, id) {
+function postRequest(id, teamid) {
   return db
     .query(
       `INSERT INTO requests (playerid, teamid) VALUES ($1, $2) RETURNING id,status`,
@@ -38,7 +39,7 @@ function postRequest(data, id) {
       return request.rows;
     });
 }
-function postInvite(data, id) {
+function postInvite(id, playerid) {
   return db
     .query(
       `INSERT INTO invites (playerid, teamid) VALUES ($1, $2) RETURNING id,status`,
@@ -70,6 +71,31 @@ function updateInvite(data, id) {
       return status.rows;
     });
 }
+function checkInvites(playerid, id) {
+  console.log(playerid,id)
+  return db
+    .query(
+      `SELECT * FROM invites WHERE playerid = $1 AND teamid = $2`,
+      [playerid, id]
+    )
+    .then((invite) => {
+      return invite.rows;
+    });
+}
+function checkRequests(teamid, id) {
+
+  return db
+    .query(
+      `SELECT * FROM requests WHERE playerid = $1 AND teamid = $2`,
+      [id, teamid]
+    )
+    .then((requests) => {
+      console.log("ss",requests.rows)
+
+      return requests.rows;
+    });
+}
+
 module.exports = {
   getGames,
   getInvites,
@@ -78,4 +104,6 @@ module.exports = {
   postInvite,
   updateRequest,
   updateInvite,
+  checkInvites,
+  checkRequests,
 };
