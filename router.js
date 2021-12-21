@@ -24,14 +24,14 @@ router.get("/games", actions.games);
 //getting all the requests
 router.get("/requests", actions.getRequests); // middleware
 //getting all the invites
-router.post("/invites", actions.getInvites); // middleware
+router.post("/invites", verifyAccount, actions.getInvites); // middleware
 //adding invites
-router.post("/addInvites", actions.addInvite); // middleware
+router.post("/addInvites", verifyAccount, actions.addInvite); // middleware
 // //adding requests
-router.post("/addRequests", actions.addRequest); // middleware
+router.post("/addRequests", verifyAccount, actions.addRequest); // middleware
 // //updating requests
-router.post("/updateRequests", actions.inviteRequest); // middleware
+router.post("/updateRequests", verifyAccount, actions.inviteRequest); // middleware
 // //updating invites
-router.post("/updateInvites", actions.inviteStatus); // middleware
+router.post("/updateInvites", verifyAccount, actions.inviteStatus); // middleware
 
 module.exports = router;

@@ -44,7 +44,6 @@ function registerP(req, res, next) {
 function loginP(req, res, next) {
   const player = req.body;
   //we search for the user
-  console.log(player);
   model
     .getPlayer(player.username)
     .then((find) => {
@@ -61,12 +60,13 @@ function loginP(req, res, next) {
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
-              { username: player.username, id: find[0].id },
+              { username: player.username, id: find[0].id, pot: "player" },
               SECRET
             );
             const response = {
               username: player.username,
               access_token: token,
+              success: true,
             };
             res.status(200).send(response);
           }

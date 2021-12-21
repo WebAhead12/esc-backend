@@ -11,7 +11,7 @@ function getGames() {
 function getInvites(id) {
   return db
     .query(
-      `SELECT invites.status, teams.teamname FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
+      `SELECT invites.status,invites.teamid,teams.teamname FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
       [id]
     )
     .then((invites) => {

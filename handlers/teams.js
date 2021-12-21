@@ -59,13 +59,13 @@ function loginT(req, res, next) {
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
-              { teamname: team.teamname, id: find[0].id },
+              { teamname: team.teamname, id: find[0].id, pot: "team" },
               SECRET
             );
             const response = {
               teamname: team.teamname,
               access_token: token,
-              status: "",
+              success: true,
             };
             res.status(200).send(response);
           }
