@@ -12,13 +12,18 @@ function registerT(req, res, next) {
   model
     .getTeam(teamname)
     .then((find) => {
+      console.log(find);
       if (find.length == 0) {
         player.getPlayerByEmail(req.body.email).then((email) => {
           if (email.length == 0) {
             model
               .createTeam(req.body) //function to create a user using the username and passowrd
               .then((id) => {
-                res.status(401).send(id.rows[0]);
+                const response = {
+                  ...id.rows[0],
+                  status: "success",
+                };
+                res.status(200).send(response);
               })
               .catch(next);
           } else {

@@ -16,9 +16,10 @@ function createTeam(team) {
         team.imagelink,
         team.game,
         team.requirements,
+        team.name,
       ];
       return db.query(
-        "INSERT INTO teams(teamname, password, email, description, imagelink, game, requirements) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id, teamname",
+        "INSERT INTO teams(teamname, password, email, description, imagelink, game, requirements,name) VALUES($1, $2, $3, $4, $5, $6, $7,$8) RETURNING id, teamname",
         values
       );
     });
