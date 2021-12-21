@@ -9,7 +9,7 @@ function createTeam(team) {
     .then((salt) => bcrypt.hash(team.password, salt))
     .then((hash) => {
       const values = [
-        team.teamname,
+        team.username,
         hash,
         team.email,
         team.description,
