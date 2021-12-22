@@ -50,7 +50,20 @@ CREATE TABLE games(
     label varchar(36)
 );
 
-
+-- INSERT INTO teams (
+--     teamname,
+--     password,
+--     name,
+--     email,
+--     description,
+--     imagelink,
+--     game,
+--     requirements
+--     ) 
+-- VALUES(
+--     "cloud9",
+--     ""
+-- )
 
 
 

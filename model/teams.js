@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 
 function createTeam(team) {
+  console.log(team);
   return bcrypt
     .genSalt(10)
     .then((salt) => bcrypt.hash(team.password, salt))

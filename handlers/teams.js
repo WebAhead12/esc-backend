@@ -8,7 +8,7 @@ const player = require("../model/players");
 
 function registerT(req, res, next) {
   const teamname = req.body.teamname;
-  console.log(req.body);
+  console.log("req.body", req.body);
   model
     .getTeam(teamname)
     .then((find) => {
@@ -41,12 +41,12 @@ function registerT(req, res, next) {
 
 function loginT(req, res, next) {
   const team = req.body;
-  console.log(team);
+  console.log("team", team);
   //we search for the user
   model
     .getTeam(team.teamname)
     .then((find) => {
-      console.log(find);
+      console.log("find", find);
       //if the getUser function returns and empty array there is not user in our dt
       if (find.length == 0) {
         const response = { status: "noUser" };
