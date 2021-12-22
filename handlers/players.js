@@ -29,10 +29,10 @@ function registerP(req, res, next) {
               })
               .catch(next);
           } else {
-            const response = { status: "team is using email" };
-            res.status(401).send(response);
+            const response = { status: "player is using email" };
+            res.status(401).send(response)
           }
-        });
+        })
       } else {
         const response = { status: "username taken" };
         res.status(401).send(response);
@@ -76,7 +76,7 @@ function loginP(req, res, next) {
     .catch(next);
 }
 
-function allPlayers(req, res, next) {
+function playerByGame(req, res, next) {
   const game = req.params.game;
   model
     .getAllPlayers(game)
@@ -85,4 +85,23 @@ function allPlayers(req, res, next) {
     })
     .catch(next);
 }
-module.exports = { loginP, registerP, allPlayers };
+function playerByName(req, res, next) {
+  console.log(req.params.username);
+  model
+    .getPlayer(req.params.username)
+    .then((player) => {
+      res.status(200).send(player);
+    })
+    .catch(next);
+}
+function AllPlayers(req, res, next) {
+  model
+    .getAllPlayers()
+    .then((players) => {
+      res.status(200).send(players);
+    })
+    .catch(next);
+}
+
+
+module.exports = { loginP, registerP, AllPlayers, playerByName,playerByGame };

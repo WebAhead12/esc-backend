@@ -50,4 +50,9 @@ CREATE TABLE games(
     label varchar(36)
 );
 
+
+
+
+
+
 COMMIT;

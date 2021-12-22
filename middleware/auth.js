@@ -14,11 +14,16 @@ function verifyAccount(req, res, next) {
   const token = authHeader.replace("Bearer ", "");
   try {
     const tokenData = jwt.verify(token, SECRET);
-    if (req.username) {
+    if (tokenData.username) {
       req.username = tokenData.username;
       req.id = tokenData.id;
       next();
+    }else{
+      req.teamname = tokenData.teamname;
+      req.id = tokenData.id;
+      next()
     }
+    
   } catch (_error) {
     const error = new Error("Invalid token");
     error.status = 401;
