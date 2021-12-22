@@ -55,6 +55,11 @@ function getAllTeams() {
       return team.rows;
     });
 }
+function getTeamById(id) {
+  return db.query(`SELECT * FROM teams WHERE id=$1 `, [id]).then((team) => {
+    return team.rows;
+  });
+}
 
 module.exports = {
   createTeam,
@@ -62,4 +67,5 @@ module.exports = {
   getAllTeams,
   getTeamsByGame,
   getTeamByEmail,
+  getTeamById,
 };

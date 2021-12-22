@@ -17,6 +17,8 @@ router.post("/loginP", players.loginP);
 router.get("/teams/:game", teams.teams);
 router.get("/Selectedteams/:teamName", teams.teamByName);
 router.get("/teams", teams.teamsAll);
+router.get("/teamProfile", verifyAccount, teams.teamById);
+router.get("/playerProfile", verifyAccount, players.playerById);
 //get all the players
 router.get("/players/:game", players.playerByGame);
 router.get("/players", players.AllPlayers);
@@ -24,7 +26,7 @@ router.get("/Selectedplayer/:username", players.playerByName);
 //get all the games
 router.get("/games", actions.games);
 //getting all the requests
-router.get("/requests",verifyAccount, actions.getRequests); // middleware
+router.get("/requests", verifyAccount, actions.getRequests); // middleware
 //getting all the invites
 router.get("/invites", verifyAccount, actions.getInvites); // middleware
 //adding invites

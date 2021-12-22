@@ -84,6 +84,12 @@ function teams(req, res, next) {
     .catch(next);
 }
 
+function teamById(req, res, next) {
+  const id = req.id;
+  model.getTeamById(id).then((team) => {
+    res.status(200).send(team);
+  });
+}
 function teamsAll(req, res, next) {
   model
     .getAllTeams()
@@ -101,4 +107,4 @@ function teamByName(req, res, next) {
     })
     .catch(next);
 }
-module.exports = { loginT, registerT, teams, teamsAll, teamByName };
+module.exports = { loginT, registerT, teams, teamsAll, teamByName, teamById };
