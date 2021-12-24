@@ -10,7 +10,6 @@ function games(req, res, next) {
     .catch(next);
 }
 function getRequests(req, res, next) {
-  console.log(req.id)
   model
     .getRequests(req.id)
     .then((requests) => {
@@ -19,7 +18,6 @@ function getRequests(req, res, next) {
     .catch(next);
 }
 function getInvites(req, res, next) {
-  console.log(req.id)
   model
     .getInvites(req.id)
     .then((invites) => {
@@ -29,12 +27,10 @@ function getInvites(req, res, next) {
 }
 
 function addRequest(req, res, next) {
-  console.log(req.body)
-  console.log(req.id)
   const teamid = req.body.teamid; //teamid playerid + status "pending"
-  const id = req.id
+  const id = req.id;
   model
-    .postRequest(id,teamid)
+    .postRequest(id, teamid)
     .then((invites) => {
       res.status(200).send(invites);
     })
@@ -42,12 +38,10 @@ function addRequest(req, res, next) {
 }
 
 function addInvite(req, res, next) {
-  console.log(req.body.playerid)
-  console.log(req.id)
   const playerid = req.body.playerid; //teamid playerid + status "pending"
-  const id = req.id
+  const id = req.id;
   model
-    .postInvite(id,playerid)
+    .postInvite(id, playerid)
     .then((invites) => {
       res.status(200).send(invites);
     })
@@ -77,26 +71,25 @@ function inviteRequest(req, res, next) {
     .catch(next);
 }
 
-function checkInvites (req,res,next){
-  console.log(req.body)
+function checkInvites(req, res, next) {
   const playerid = req.body.playerid;
   const id = req.id; //player id
   model
-  .checkInvites(playerid, id)
-  .then((status) => {
-    res.status(200).send(status);
-  })
-  .catch(next);
+    .checkInvites(playerid, id)
+    .then((status) => {
+      res.status(200).send(status);
+    })
+    .catch(next);
 }
-function checkRequests (req,res,next){
+function checkRequests(req, res, next) {
   const teamid = req.body.teamid;
   const id = req.id; //team id
   model
-  .checkRequests(teamid, id)
-  .then((status) => {
-    res.status(200).send(status);
-  })
-  .catch(next);
+    .checkRequests(teamid, id)
+    .then((status) => {
+      res.status(200).send(status);
+    })
+    .catch(next);
 }
 
 module.exports = {
@@ -108,5 +101,5 @@ module.exports = {
   inviteStatus,
   inviteRequest,
   checkRequests,
-  checkInvites
+  checkInvites,
 };

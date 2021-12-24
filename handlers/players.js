@@ -12,12 +12,9 @@ function registerP(req, res, next) {
   model
     .getPlayer(username)
     .then((find) => {
-      console.log(find.length);
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
-          console.log(email);
           if (email.length == 0) {
-            console.log(req.body);
             model
               .createPlayer(req.body) //function to create a user using the username and passowrd
               .then((id) => {
@@ -27,14 +24,16 @@ function registerP(req, res, next) {
                 };
                 res.status(200).send(response);
               })
-              .catch(next);
+              .catch((error) =>
+                res.status(401).send({ status: "Email is already taken!" })
+              );
           } else {
-            const response = { status: "player is using email" };
+            const response = { status: "Email is already taken!" };
             res.status(401).send(response);
           }
         });
       } else {
-        const response = { status: "username taken" };
+        const response = { status: "Username is already taken" };
         res.status(401).send(response);
       }
     })
@@ -48,15 +47,14 @@ function loginP(req, res, next) {
     .getPlayer(player.username)
     .then((find) => {
       //if the getUser function returns and empty array there is not user in our dt
-      console.log(req.body);
       if (find.length == 0) {
-        const response = { status: "noUser" };
+        const response = { status: "Username doesn't exist" };
         res.status(401).send(response);
       } else {
         const dbPassword = find[0].password;
         bcrypt.compare(player.password, dbPassword).then((match) => {
           if (!match) {
-            res.status(401).send({ status: "wrong password" });
+            res.status(401).send({ status: "Wrong password" });
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
@@ -86,7 +84,6 @@ function playerByGame(req, res, next) {
     .catch(next);
 }
 function playerByName(req, res, next) {
-  console.log(req.params.username);
   model
     .getPlayer(req.params.username)
     .then((player) => {

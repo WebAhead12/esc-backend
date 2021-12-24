@@ -8,13 +8,12 @@ const player = require("../model/players");
 
 function registerT(req, res, next) {
   const teamname = req.body.teamname;
-  console.log("req.body", req.body);
   model
     .getTeam(teamname)
     .then((find) => {
-      console.log(find);
       if (find.length == 0) {
         player.getPlayerByEmail(req.body.email).then((email) => {
+          console.log(email.length);
           if (email.length == 0) {
             model
               .createTeam(req.body) //function to create a user using the username and passowrd
@@ -27,12 +26,12 @@ function registerT(req, res, next) {
               })
               .catch(next);
           } else {
-            const response = { status: "player is using email" };
+            const response = { status: "Email is already taken!" };
             res.status(401).send(response);
           }
         });
       } else {
-        const response = { status: "username taken" };
+        const response = { status: "Username is already taken" };
         res.status(401).send(response);
       }
     })
@@ -41,21 +40,19 @@ function registerT(req, res, next) {
 
 function loginT(req, res, next) {
   const team = req.body;
-  console.log("team", team);
   //we search for the user
   model
     .getTeam(team.teamname)
     .then((find) => {
-      console.log("find", find);
       //if the getUser function returns and empty array there is not user in our dt
       if (find.length == 0) {
-        const response = { status: "noUser" };
+        const response = { status: "Username doesn't exist" };
         res.status(401).send(response);
       } else {
         const dbPassword = find[0].password;
         bcrypt.compare(team.password, dbPassword).then((match) => {
           if (!match) {
-            res.send({ status: "wrong password" });
+            res.send({ status: "Wrong password" });
           } else {
             //if it is correct it creates a token
             const token = jwt.sign(
@@ -99,7 +96,6 @@ function teamsAll(req, res, next) {
     .catch(next);
 }
 function teamByName(req, res, next) {
-  console.log(req.params.teamName);
   model
     .getTeam(req.params.teamName)
     .then((team) => {
