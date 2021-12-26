@@ -15,7 +15,7 @@ CREATE TABLE players(
     imagelink varchar(255),
     location varchar(255),
     registerdate DATE DEFAULT CURRENT_TIMESTAMP,
-    games json
+    stats json
 );
 
 CREATE TABLE teams(
