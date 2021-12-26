@@ -13,7 +13,7 @@ function registerT(req, res, next) {
     .then((find) => {
       if (find.length == 0) {
         player.getPlayerByEmail(req.body.email).then((email) => {
-          console.log(email.length);
+          console.log("email.length" + email.length);
           if (email.length == 0) {
             model
               .createTeam(req.body) //function to create a user using the username and passowrd
@@ -24,7 +24,10 @@ function registerT(req, res, next) {
                 };
                 res.status(200).send(response);
               })
-              .catch(next);
+              .catch((e) => {
+                const response = { status: "Email is already taken!" };
+                res.status(401).send(response);
+              });
           } else {
             const response = { status: "Email is already taken!" };
             res.status(401).send(response);
@@ -35,7 +38,7 @@ function registerT(req, res, next) {
         res.status(401).send(response);
       }
     })
-    .catch(next);
+    .catch((e) => console.log("hi"));
 }
 
 function loginT(req, res, next) {
@@ -69,7 +72,7 @@ function loginT(req, res, next) {
         });
       }
     })
-    .catch(next);
+    .catch(console.log("hi"));
 }
 function teams(req, res, next) {
   const game = req.params.game;
