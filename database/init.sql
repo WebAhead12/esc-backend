@@ -27,6 +27,7 @@ CREATE TABLE teams(
     description varchar(255),
     imagelink varchar(255),
     game varchar(36),
+    registerdate DATE DEFAULT CURRENT_TIMESTAMP,
     requirements json
 );
 
