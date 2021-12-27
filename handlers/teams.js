@@ -74,8 +74,9 @@ function loginT(req, res, next) {
     })
     .catch(console.log("hi"));
 }
-function teams(req, res, next) {
+function teamsByGame(req, res, next) {
   const game = req.params.game;
+  console.log(game);
   model
     .getTeamsByGame(game)
     .then((teams) => {
@@ -106,4 +107,11 @@ function teamByName(req, res, next) {
     })
     .catch(next);
 }
-module.exports = { loginT, registerT, teams, teamsAll, teamByName, teamById };
+module.exports = {
+  loginT,
+  registerT,
+  teamsByGame,
+  teamsAll,
+  teamByName,
+  teamById,
+};

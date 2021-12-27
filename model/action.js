@@ -12,7 +12,7 @@ function getGames() {
 function getInvites(id) {
   return db
     .query(
-      `SELECT invites.status,invites.teamid,teams.teamname,teams.name FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
+      `SELECT invites.status,invites.teamid,teams.teamname,teams.name, teams.email FROM invites LEFT JOIN teams ON invites.teamid = teams.id WHERE playerid = $1`,
       [id]
     )
     .then((invites) => {
@@ -22,7 +22,7 @@ function getInvites(id) {
 function getRequests(id) {
   return db
     .query(
-      `SELECT requests.status,requests.playerid, players.username FROM requests LEFT JOIN players ON requests.playerid = players.id WHERE teamid = $1`,
+      `SELECT requests.status,requests.playerid, players.username, players.email FROM requests LEFT JOIN players ON requests.playerid = players.id WHERE teamid = $1`,
       [id]
     )
     .then((requests) => {
@@ -72,25 +72,24 @@ function updateInvite(data, id) {
     });
 }
 function checkInvites(playerid, id) {
-  console.log(playerid,id)
+  console.log(playerid, id);
   return db
-    .query(
-      `SELECT * FROM invites WHERE playerid = $1 AND teamid = $2`,
-      [playerid, id]
-    )
+    .query(`SELECT * FROM invites WHERE playerid = $1 AND teamid = $2`, [
+      playerid,
+      id,
+    ])
     .then((invite) => {
       return invite.rows;
     });
 }
 function checkRequests(teamid, id) {
-
   return db
-    .query(
-      `SELECT * FROM requests WHERE playerid = $1 AND teamid = $2`,
-      [id, teamid]
-    )
+    .query(`SELECT * FROM requests WHERE playerid = $1 AND teamid = $2`, [
+      id,
+      teamid,
+    ])
     .then((requests) => {
-      console.log("ss",requests.rows)
+      console.log("ss", requests.rows);
 
       return requests.rows;
     });

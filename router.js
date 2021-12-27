@@ -8,20 +8,23 @@ const verifyAccount = require("./middleware/auth");
 router.get("/", (req, res) => {
   res.send({ message: "hi" });
 });
-
+//register for player
 router.post("/registerP", players.registerP);
+//register for team
 router.post("/registerT", teams.registerT);
+//login for team
 router.post("/loginT", teams.loginT);
+//login for player
 router.post("/loginP", players.loginP);
-//get all the teams
-router.get("/teams/:game", teams.teams);
-router.get("/Selectedteams/:teamName", teams.teamByName);
+//get teams by game chosen
+router.get("/players", players.AllPlayers);
 router.get("/teams", teams.teamsAll);
 router.get("/teamProfile", verifyAccount, teams.teamById);
 router.get("/playerProfile", verifyAccount, players.playerById);
 //get all the players
 router.get("/players/:game", players.playerByGame);
-router.get("/players", players.AllPlayers);
+router.get("/teams/:game", teams.teamsByGame);
+router.get("/Selectedteams/:teamName", teams.teamByName);
 router.get("/Selectedplayer/:username", players.playerByName);
 //get all the games
 router.get("/games", actions.games);
