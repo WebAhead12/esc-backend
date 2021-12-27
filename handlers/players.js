@@ -14,6 +14,7 @@ function registerP(req, res, next) {
     .then((find) => {
       if (find.length == 0) {
         teams.getTeamByEmail(req.body.email).then((email) => {
+          console.log(req.body);
           if (email.length == 0) {
             model
               .createPlayer(req.body) //function to create a user using the username and passowrd
@@ -24,9 +25,7 @@ function registerP(req, res, next) {
                 };
                 res.status(200).send(response);
               })
-              .catch((error) =>
-                res.status(401).send({ status: "Email is already taken!" })
-              );
+              .catch((error) => res.status(401).send({ status: "error" }));
           } else {
             const response = { status: "Email is already taken!" };
             res.status(401).send(response);

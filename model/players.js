@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 
 function createPlayer(player) {
+  console.log(player.username, "p");
   return bcrypt
     .genSalt(10)
     .then((salt) => bcrypt.hash(player.password, salt))
@@ -22,7 +23,7 @@ function createPlayer(player) {
         player.stats,
       ];
       return db.query(
-        "INSERT INTO players(username, password, firstname, lastname, email, age, languages, gender, imagelink, location,stats) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11) RETURNING id, username",
+        "INSERT INTO players(username, password, firstname, lastname, email, age, languages, gender, imagelink, location,stats) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12) RETURNING id, username",
         values
       );
     });
